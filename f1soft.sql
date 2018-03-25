@@ -12,6 +12,10 @@ email   varchar2(50),
 password varchar2(25) encrypt using 'AES256',
 constraint users_pk primary key(user_id)
 );
+
+alter table user_info add hire_date date;
+alter table user_info modify (hire_date date default sysdate);
+
 create sequence user_info_sq
     start with 0
     minvalue 0
@@ -133,3 +137,24 @@ insert into salary values (salary_sq.nextval, 70000, 9);
 
 select * from salary;
 
+create table attendance (
+id  number,
+user_info_id    number,
+arrived_time    timestamp(5),
+exit_time       timestamp(5),
+constraint attendance_pk primary key(id),
+constraint attendance_user_info_fk foreign key(user_info_id) references user_info(user_id)
+);
+
+alter table attendance modify (id number);
+
+create sequence attendance_sq
+    start with 0
+    minvalue 0
+    increment by 1
+    nocache
+    nocycle;
+    
+insert into attendance values(attendance_sq.nextval, 10, systimestamp, TIMESTAMP '2003-01-01 06:00:00 US/Pacific');
+
+select * from attendance;
